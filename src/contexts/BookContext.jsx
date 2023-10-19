@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 // CREATING BOOK CONTEXT
 export const BookContext = createContext();
@@ -15,8 +16,20 @@ export const BookContextProvider = ({ children }) => {
     price: ""
   });
 
+  // BOOKS DATA 
+  const [bookData, setBookData] = useState([])
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/book")
+      .then((res) => {
+        console.log(res)
+        setBookData(res.data.books)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
   return (
-    <BookContext.Provider value={{ book, setBook }}>
+    <BookContext.Provider value={{ book, setBook, bookData, setBookData }}>
       {children}
     </BookContext.Provider>
   );
