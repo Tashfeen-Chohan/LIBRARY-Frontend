@@ -1,10 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { BookContext } from "../contexts/BookContext";
+import axios from "axios";
 
 const Home = () => {
   const [search, setSearch] = useState();
   const { bookData } = useContext(BookContext);
+
+  // FUNCTION TO DELETE BOOK
+  function deleteBook(id){
+    axios.delete("http://localhost:3000/api/book/" +id)
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }
 
   return (
     <div className="flex justify-center items-center flex-col">
@@ -71,7 +79,7 @@ const Home = () => {
               <Link to={`/update/:${val._id}`}>
                 <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
               </Link>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+              <button onClick={() => deleteBook(val._id)}  className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
             </td>
           </tr>
           ))}

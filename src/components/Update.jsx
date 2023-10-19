@@ -5,6 +5,7 @@ import {GiSpellBook} from 'react-icons/gi'
 import {FaPencilAlt} from 'react-icons/fa'
 import {MdPublish} from 'react-icons/md'
 import { BsCurrencyDollar } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
 const Update = () => {
 
@@ -82,6 +83,11 @@ const Update = () => {
               {/* ADD BOOK BUTTON */}
               <div className="mt-7 w-full">
                 <button type='submit' className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">Update Book</button>
+              </div>
+              <div className="mt-2 w-full">
+                <Link to={"/"}>
+                 <button className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">Go Back</button>
+                </Link>
               </div>
             </form>
           </div>

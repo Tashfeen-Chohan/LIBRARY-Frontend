@@ -26,7 +26,7 @@ export const BookContextProvider = ({ children }) => {
         setBookData(res.data.books)
       })
       .catch(err => console.log(err))
-  }, [])
+  }, [bookData])
 
   return (
     <BookContext.Provider value={{ book, setBook, bookData, setBookData }}>
