@@ -4,17 +4,20 @@ import { BookContext } from "../contexts/BookContext";
 import axios from "axios";
 
 const Home = () => {
-  const { bookData, loading, error } =
+  const { bookData, loading, error, fetchBookData } =
     useContext(BookContext);
   const [search, setSearch] = useState();
 
   // FUNCTION TO DELETE BOOK
-  function deleteBook(id) {
-    axios
-      .delete("http://localhost:3000/api/book/" + id)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+  async function deleteBook(id) {
+    try {
+      await axios.delete("http://localhost:3000/api/book/" +id)
+      fetchBookData()
+    } catch (error) {
+      console.log(error)
+    }
   }
+    
 
   return (
     <div className="flex justify-center items-center flex-col">

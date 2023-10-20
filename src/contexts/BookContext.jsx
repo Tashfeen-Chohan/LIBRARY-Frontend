@@ -34,7 +34,7 @@ export const BookContextProvider = ({ children }) => {
 
   useEffect(() => {  
     fetchBookData();
-  }, [bookData]);
+  }, []);
 
   return (
     <BookContext.Provider
