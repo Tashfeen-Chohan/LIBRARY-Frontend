@@ -1,11 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BookContext } from "../contexts/BookContext";
 import axios from "axios";
 
 const Home = () => {
+  // const { bookData } = useContext(BookContext);
   const [search, setSearch] = useState();
-  const { bookData } = useContext(BookContext);
+  const [bookData, setBookData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  // FETCHING BOOKS FROM DATABASE
+  useEffect(() => {
+    async function fetchBookData(){
+      try {
+        const res = await axios.get("http://localhost:3000/api/book")
+        setBookData(res.data.books)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        setError(true)
+      }
+    }
+    fetchBookData()
+  }, [])
 
   // FUNCTION TO DELETE BOOK
   function deleteBook(id){
@@ -47,6 +65,17 @@ const Home = () => {
           </button>
         </Link>
       </div>
+
+      {/* LOADING STATE */}
+      <div className={loading ? 'mt-10 flex justify-center items-center' : 'hidden'}>
+        <p className="font-bold text-yellow-500">Loading...</p>
+      </div>
+
+      {/* ERROR STATE */}
+      <div className={error ? 'flex mt-10 justify-center items-center' : 'hidden'}>
+        <p className="font-bold text-red-500">Error occured during fetching the data...</p>
+      </div>
+
 
       {/* BOOKS TABLE */}
       <div className="w-[80%] mt-14 mx-auto">
