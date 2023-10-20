@@ -13,23 +13,43 @@ export const BookContextProvider = ({ children }) => {
     publisher: "",
     category: "",
     copies: "",
-    price: ""
+    price: "",
   });
+  // BOOKS DATA
+  const [bookData, setBookData] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // BOOKS DATA 
-  const [bookData, setBookData] = useState([])
+  // FETCHING BOOKS FROM DATABASE
+  async function fetchBookData() {
+    try {
+      const res = await axios.get("http://localhost:3000/api/book");
+      setBookData(res.data.books);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+    }
+  }
 
-  useEffect(() => {
-    axios.get("http://localhost:3000/api/book")
-      .then((res) => {
-        console.log(res)
-        setBookData(res.data.books)
-      })
-      .catch(err => console.log(err))
-  }, [bookData])
+  useEffect(() => {  
+    fetchBookData();
+  }, [bookData]);
 
   return (
-    <BookContext.Provider value={{ book, setBook, bookData, setBookData }}>
+    <BookContext.Provider
+      value={{
+        loading,
+        setLoading,
+        error,
+        setError,
+        book,
+        setBook,
+        bookData,
+        setBookData,
+        fetchBookData
+      }}
+    >
       {children}
     </BookContext.Provider>
   );

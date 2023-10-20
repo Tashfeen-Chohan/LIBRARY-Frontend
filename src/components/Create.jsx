@@ -45,7 +45,6 @@ const Create = () => {
   // HANDLE SUBMIT
   function handleSubmit(e){
     e.preventDefault()
-    // alert("Book added successfullly")
     if(title && author && publisher && category && copies && price){
       axios.post("http://localhost:3000/api/book", b)
       .then(res => {
