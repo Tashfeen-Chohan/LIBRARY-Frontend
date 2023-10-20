@@ -72,7 +72,7 @@ const Home = () => {
       </div>
 
       {/* BOOKS TABLE */}
-      <div className="w-[80%] mt-14 mx-auto">
+      <div className="w-[80%] my-14 mx-auto">
         <h1 className="font-bold text-center mb-6 text-2xl md:text-3xl">
           BOOKS
         </h1>

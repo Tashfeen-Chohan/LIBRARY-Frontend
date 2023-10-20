@@ -10,11 +10,11 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 const Create = () => {
-  const { book, setBook } = useContext(BookContext);
-  // const [bookData, setBookData] = useState([])
+  const { book, setBook, fetchBookData } = useContext(BookContext);
   const [error, setError] = useState();
-  const navigate = useNavigate;
-
+  const navigate = useNavigate();
+  
+  // const [bookData, setBookData] = useState([])
   // const [b, setB] = useState({
   //   title: "",
   //   author: "",
@@ -43,21 +43,20 @@ const Create = () => {
   // }
 
   // HANDLE SUBMIT
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (title && author && publisher && category && copies && price) {
-      axios
-        .post("http://localhost:3000/api/book", book)
-        .then((res) => {
-          console.log(res);
-          navigate("/");
-        })
-        .catch((err) => {
-          setError(err.response.data.message);
-          console.log(err)
-        });
+  async function handleSubmit(e){
+    e.preventDefault()
+    if (title && author && publisher && category && copies && price){
+      try {
+        await axios.post("http://localhost:3000/api/book", book)
+        fetchBookData()
+        navigate("/")
+        setBook({})
+      } catch (error) {
+        setError(error.response.data.message)
+        console.log(error)
+      }
     } else {
-      setError("All field are required!");
+      setError("All field are required!")
     }
   }
 
@@ -176,7 +175,7 @@ const Create = () => {
               </div>
 
               {/* ERROR DIV */}
-              <div className={error ? "inline-block text-sm mb-1" : "hidden"}>
+              <div className={error ? "inline-block text-sm pl-1 mb-[3px]" : "hidden"}>
                 <p className="text-red-500 font-bold">{error}</p>
               </div>
 
