@@ -4,20 +4,19 @@ import { BookContext } from "../contexts/BookContext";
 import axios from "axios";
 
 const Home = () => {
-  const { bookData, loading, error, fetchBookData } =
+  const { bookData, loading, error, fetchBooks, fetchSingleBook } =
     useContext(BookContext);
   const [search, setSearch] = useState();
 
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
     try {
-      await axios.delete("http://localhost:3000/api/book/" +id)
-      fetchBookData()
+      await axios.delete("http://localhost:3000/api/book/" + id);
+      fetchBooks();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
-    
 
   return (
     <div className="flex justify-center items-center flex-col">
@@ -77,6 +76,7 @@ const Home = () => {
           BOOKS
         </h1>
         <table className="min-w-full border-collapse block md:table">
+
           <thead className="block md:table-header-group">
             <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
@@ -157,7 +157,7 @@ const Home = () => {
                   <span className="inline-block w-1/3 md:hidden font-bold">
                     Actions
                   </span>
-                  <Link to={`/update/:${val._id}`}>
+                  <Link to={`/update/${val._id}`}>
                     <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">
                       Edit
                     </button>

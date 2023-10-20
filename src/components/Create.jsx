@@ -7,22 +7,12 @@ import { MdPublish } from "react-icons/md";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 
 const Create = () => {
-  const { book, setBook, fetchBookData } = useContext(BookContext);
+  const { book, setBook, fetchBooks } = useContext(BookContext);
   const [error, setError] = useState();
   const navigate = useNavigate();
   
-  // const [bookData, setBookData] = useState([])
-  // const [b, setB] = useState({
-  //   title: "",
-  //   author: "",
-  //   publisher: "",
-  //   category: "",
-  //   copies: "",
-  //   price: "",
-  // })
   const { title, author, publisher, category, copies, price } = book;
 
   // HANDLE CHANGE
@@ -48,7 +38,7 @@ const Create = () => {
     if (title && author && publisher && category && copies && price){
       try {
         await axios.post("http://localhost:3000/api/book", book)
-        fetchBookData()
+        fetchBooks()
         navigate("/")
         setBook({})
       } catch (error) {

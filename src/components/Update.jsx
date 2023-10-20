@@ -1,15 +1,45 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BookContext } from '../contexts/BookContext'
 import {BiSolidBookOpen, BiSolidCategory, BiSolidCopy} from 'react-icons/bi'
 import {GiSpellBook} from 'react-icons/gi'
 import {FaPencilAlt} from 'react-icons/fa'
 import {MdPublish} from 'react-icons/md'
 import { BsCurrencyDollar } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Update = () => {
 
-  const {book, setBook} = useContext(BookContext)
+  const {book, setBook, fetchBooks} = useContext(BookContext)
+  const [error, setError] = useState()
+  const {id} = useParams()
+  const navigate = useNavigate()
+
+  const { title, author, publisher, category, copies, price } = book;
+
+
+  // FETCHING SINGLE BOOK FROM DATABASE
+  async function fetchSingleBook(id){
+    try {
+      const res = await axios.get("http://localhost:3000/api/book/" +id)
+      console.log(res)
+      setBook({
+        title: res.data.book.title,
+        author: res.data.book.author,
+        publisher: res.data.book.publisher,
+        category: res.data.book.category,
+        copies: res.data.book.copies,
+        price: res.data.book.price,
+      })
+    } catch (error) {
+      console.log(error)
+      setError(error.response.data.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchSingleBook(id)
+  }, [])
 
   // HANDLE CHANGE
   function handleChange(e){
@@ -21,10 +51,21 @@ const Update = () => {
   }
 
   // HANDLE SUBMIT
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault()
-    alert("Book updated successfullly")
-
+    if (title && author && publisher && category && copies && price){
+      try {
+        await axios.put("http://localhost:3000/api/book/" +id, book)
+        fetchBooks()
+        navigate("/")
+        setBook({})
+      } catch (error) {
+        setError(error.response.data.message)
+        console.log(error)
+      }
+    } else {
+      setError("All field are required!")
+    }
   }
 
   return (
@@ -47,41 +88,46 @@ const Update = () => {
               {/* TITLE */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="title" className='text-2xl'><BiSolidBookOpen/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" autoFocus={true} placeholder='Book Title' name='title' id='title' value={book.title} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" autoFocus={true} placeholder='Book Title' name='title' id='title' value={title} onChange={handleChange} />
               </div>
 
               {/* AUTHOR */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="author" className='text-2xl'><FaPencilAlt/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Author' name='author' id='author' value={book.author} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Author' name='author' id='author' value={author} onChange={handleChange} />
               </div>
 
               {/* PUBLISHER */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="publisher" className='text-2xl'><MdPublish/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Publisher' name='publisher' id='publisher' value={book.publisher} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Publisher' name='publisher' id='publisher' value={publisher} onChange={handleChange} />
               </div>
 
               {/* CATEGORY */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="category" className='text-2xl'><BiSolidCategory/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Category' name='category' id='category' value={book.category} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="text" placeholder='Book Category' name='category' id='category' value={category} onChange={handleChange} />
               </div>
 
               {/* COPIES */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="copies" className='text-2xl'><BiSolidCopy/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="number" placeholder='Book Copies' name='copies' id='copies' value={book.copies} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-500 outline-none focus:border-black' type="number" placeholder='Book Copies' name='copies' id='copies' value={copies} onChange={handleChange} />
               </div>
 
               {/* PRICE */}
               <div className='flex justify-center items-center gap-6 mb-4'>
                 <label htmlFor="price" className='text-2xl'><BsCurrencyDollar/></label>
-                <input className='border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black' type="number" placeholder='Book Price in dollars' name='price' id='price' value={book.price} onChange={handleChange} />
+                <input className='border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black' type="number" placeholder='Book Price in dollars' name='price' id='price' value={price} onChange={handleChange} />
+              </div>
+
+              {/* ERROR DIV */}
+              <div className={error ? "inline-block text-sm pl-1 mb-[3px]" : "hidden"}>
+                <p className="text-red-500 font-bold">{error}</p>
               </div>
 
               {/* ADD BOOK BUTTON */}
-              <div className="mt-7 w-full">
+              <div className="w-full">
                 <button type='submit' className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">Update Book</button>
               </div>
               <div className="mt-2 w-full">

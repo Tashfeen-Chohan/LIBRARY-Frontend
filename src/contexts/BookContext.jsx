@@ -21,7 +21,7 @@ export const BookContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // FETCHING BOOKS FROM DATABASE
-  async function fetchBookData() {
+  async function fetchBooks() {
     try {
       const res = await axios.get("http://localhost:3000/api/book");
       setBookData(res.data.books);
@@ -32,8 +32,10 @@ export const BookContextProvider = ({ children }) => {
     }
   }
 
+  
+
   useEffect(() => {  
-    fetchBookData();
+    fetchBooks();
   }, []);
 
   return (
@@ -47,7 +49,7 @@ export const BookContextProvider = ({ children }) => {
         setBook,
         bookData,
         setBookData,
-        fetchBookData
+        fetchBooks,
       }}
     >
       {children}
