@@ -14,6 +14,7 @@ const Home = () => {
     fetchBooks,
   } = useContext(BookContext);
   const [search, setSearch] = useState("");
+  const [searchError, setSearchError] = useState(false)
 
   // FILTERING BOOK [SEARCH FUNCTIONALITY]
   async function searchBook() {
@@ -24,9 +25,15 @@ const Home = () => {
         const res = await axios.get(
           `http://localhost:3000/api/book?search=${search}`
         );
-        setBookData(res.data.books);
-        setLoading(false);
-        setError(false);
+        if (res.data.books.length === 0){
+          setLoading(false)
+          setSearchError(true)
+          setBookData([])
+        } else {
+          setBookData(res.data.books);
+          setLoading(false);
+          setSearchError(false)
+        }       
       } catch (error) {
         setError(true);
         setLoading(false);
@@ -99,6 +106,11 @@ const Home = () => {
         }
       >
         <p className="font-bold text-yellow-500">Loading...</p>
+      </div>
+
+      {/* SEARCH ERROR STATE */}
+      <div className={searchError ? "flex mt-10 justify-center items-center": "hidden"}>
+        <p className="font-bold text-red-500">Book not found!</p>
       </div>
 
       {/* ERROR STATE */}
