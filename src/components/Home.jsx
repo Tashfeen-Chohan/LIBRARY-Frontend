@@ -14,7 +14,8 @@ const Home = () => {
     fetchBooks,
   } = useContext(BookContext);
   const [search, setSearch] = useState("");
-  const [searchError, setSearchError] = useState(false)
+  const [searchError, setSearchError] = useState(false);
+  const [sortBy, setSortBy] = useState("");
 
   // FILTERING BOOK [SEARCH FUNCTIONALITY]
   async function searchBook() {
@@ -25,15 +26,15 @@ const Home = () => {
         const res = await axios.get(
           `http://localhost:3000/api/book?search=${search}`
         );
-        if (res.data.books.length === 0){
-          setLoading(false)
-          setSearchError(true)
-          setBookData([])
+        if (res.data.books.length === 0) {
+          setLoading(false);
+          setSearchError(true);
+          setBookData([]);
         } else {
           setBookData(res.data.books);
           setLoading(false);
-          setSearchError(false)
-        }       
+          setSearchError(false);
+        }
       } catch (error) {
         setError(true);
         setLoading(false);
@@ -47,6 +48,20 @@ const Home = () => {
   useEffect(() => {
     searchBook();
   }, [search]);
+
+  // SORTING BOOKS 
+  async function sortBooks(){
+    try {
+      const res = await axios.get(`http://localhost:3000/api/book?sort=${sortBy}`)
+      setBookData(res.data.books)
+    } catch (error) {
+      setError(true)
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    sortBooks()
+  }, [sortBy])
 
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
@@ -90,8 +105,8 @@ const Home = () => {
       {/* ADD BOOK BUTTON */}
       <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-5 flex justify-between items-center">
         <div className="bg-slate-700  text-white inline-block px-2 py-1 rounded shadow-md">
-            Total Books: {bookData.length}
-          </div>
+          Total Books: {bookData.length}
+        </div>
         <Link to={"/create"}>
           <button className=" bg-blue-500 shadow-md text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
             Add Book
@@ -109,7 +124,11 @@ const Home = () => {
       </div>
 
       {/* SEARCH ERROR STATE */}
-      <div className={searchError ? "flex mt-10 justify-center items-center": "hidden"}>
+      <div
+        className={
+          searchError ? "flex mt-10 justify-center items-center" : "hidden"
+        }
+      >
         <p className="font-bold text-red-500">Book not found!</p>
       </div>
 
@@ -124,9 +143,25 @@ const Home = () => {
 
       {/* BOOKS TABLE */}
       <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-6 md:mt-3 mb-14 mx-auto">
-        <h1 className="font-bold text-center mb-6 text-2xl md:text-3xl">
+        <h1 className="font-bold text-center mb-3 text-2xl md:text-3xl">
           BOOKS
         </h1>
+        {/* SORTING SELECT TAG */}
+        <div className="flex justify-end items-center md:mb-3">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-slate-700 shadow-md rounded text-white outline-none px-2 py-1"
+          >
+            <option value="">Sort By</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="publisher">Publisher</option>
+            <option value="category">Category</option>
+            <option value="date asc">Date (asc)</option>
+            <option value="date desc">Date (desc)</option>
+          </select>
+        </div>
         <table className="min-w-full border-collapse block md:table">
           <thead className="block md:table-header-group">
             <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
