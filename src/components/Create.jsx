@@ -24,14 +24,6 @@ const Create = () => {
     });
   }
 
-  // function handleChange(e){
-  //   const {name, value} = e.target
-  //   setB({
-  //     ...b,
-  //     [name]: value
-  //   })
-  // }
-
   // HANDLE SUBMIT
   async function handleSubmit(e){
     e.preventDefault()

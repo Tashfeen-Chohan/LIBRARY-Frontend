@@ -56,8 +56,8 @@ const Update = () => {
       try {
         await axios.put("http://localhost:3000/api/book/" +id, book)
         fetchBooks()
-        navigate("/")
         setBook({})
+        navigate("/")
       } catch (error) {
         setError(error.response.data.message)
         console.log(error)
@@ -131,7 +131,7 @@ const Update = () => {
               </div>
               <div className="mt-2 w-full">
                 <Link to={"/"}>
-                 <button className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">Go Back</button>
+                 <button onClick={() => setBook({})} className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">Go Back</button>
                 </Link>
               </div>
             </form>

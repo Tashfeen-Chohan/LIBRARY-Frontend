@@ -39,14 +39,18 @@ const Home = () => {
         setError(true);
         setLoading(false);
       }
-      // IF SEARCH QUERY NOT FOUND, FETCH ALL BOOKS
+      // IF SEARCH DIDN'T SEARCH , FETCH ALL BOOKS
     } else {
       fetchBooks();
     }
   }
 
   useEffect(() => {
-    searchBook();
+    // DEBOUNCING
+    let timerOut = setTimeout(() => {
+      searchBook(); 
+    }, 400);
+    return () => clearTimeout(timerOut)
   }, [search]);
 
   // SORTING BOOKS 
