@@ -4,9 +4,42 @@ import { BookContext } from "../contexts/BookContext";
 import axios from "axios";
 
 const Home = () => {
-  const { bookData, loading, error, fetchBooks, fetchSingleBook } =
-    useContext(BookContext);
-  const [search, setSearch] = useState();
+  const {
+    bookData,
+    setBookData,
+    setLoading,
+    setError,
+    loading,
+    error,
+    fetchBooks,
+  } = useContext(BookContext);
+  const [search, setSearch] = useState("");
+
+  // FILTERING BOOK [SEARCH FUNCTIONALITY]
+  async function searchBook() {
+    //  IF SEARCH QUERY FOUND
+    if (search) {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/book?search=${search}`
+        );
+        setBookData(res.data.books);
+        setLoading(false);
+        // setError(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+      // IF SEARCH QUERY NOT FOUND, FETCH ALL BOOKS
+    } else {
+      fetchBooks();
+    }
+  }
+
+  useEffect(() => {
+    searchBook();
+  }, [search]);
 
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
@@ -31,10 +64,14 @@ const Home = () => {
           placeholder="Search any book here..."
           name="search"
           value={search}
+          autoFocus={true}
           onChange={(e) => setSearch(e.target.value)}
           className="shadow-lg border-b-2 px-1 py-[3px] md:w-[25%] text-lg outline-none focus:border-b-2 focus:border-black"
         />
-        <button className="bg-gray-700 text-white py-1 px-3 md:px-4 rounded hover:bg-black transition-colors duration-500">
+        <button
+          onClick={searchBook}
+          className="bg-gray-700 text-white py-1 px-3 md:px-4 rounded hover:bg-black transition-colors duration-500"
+        >
           Search
         </button>
       </div>
@@ -71,12 +108,11 @@ const Home = () => {
       </div>
 
       {/* BOOKS TABLE */}
-      <div className="w-[80%] my-14 mx-auto">
+      <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl my-14 mx-auto">
         <h1 className="font-bold text-center mb-6 text-2xl md:text-3xl">
           BOOKS
         </h1>
         <table className="min-w-full border-collapse block md:table">
-
           <thead className="block md:table-header-group">
             <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">

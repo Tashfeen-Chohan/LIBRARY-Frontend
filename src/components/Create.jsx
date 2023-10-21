@@ -39,8 +39,8 @@ const Create = () => {
       try {
         await axios.post("http://localhost:3000/api/book", book)
         fetchBooks()
-        navigate("/")
         setBook({})
+        navigate("/")
       } catch (error) {
         setError(error.response.data.message)
         console.log(error)

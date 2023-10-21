@@ -17,7 +17,6 @@ const Update = () => {
 
   const { title, author, publisher, category, copies, price } = book;
 
-
   // FETCHING SINGLE BOOK FROM DATABASE
   async function fetchSingleBook(id){
     try {

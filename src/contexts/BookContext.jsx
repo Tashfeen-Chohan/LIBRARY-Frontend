@@ -20,6 +20,7 @@ export const BookContextProvider = ({ children }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
+
   // FETCHING BOOKS FROM DATABASE
   async function fetchBooks() {
     try {
@@ -31,8 +32,6 @@ export const BookContextProvider = ({ children }) => {
       setError(true);
     }
   }
-
-  
 
   useEffect(() => {  
     fetchBooks();
