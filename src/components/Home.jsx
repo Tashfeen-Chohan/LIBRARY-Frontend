@@ -160,10 +160,11 @@ const Home = () => {
             <option value="">Sort By</option>
             <option value="title">Title</option>
             <option value="author">Author</option>
-            <option value="publisher">Publisher</option>
             <option value="category">Category</option>
-            <option value="date asc">Date (asc)</option>
-            <option value="date desc">Date (desc)</option>
+            <option value="price asc">Price Lowest</option>
+            <option value="price desc">Price Highest</option>
+            <option value="date desc">Date Newest</option>
+            <option value="date asc">Date Oldest</option>
           </select>
         </div>
         <table className="min-w-full border-collapse block md:table">
