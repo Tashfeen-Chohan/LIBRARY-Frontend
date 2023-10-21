@@ -24,7 +24,7 @@ export const BookContextProvider = ({ children }) => {
   // FETCHING BOOKS FROM DATABASE
   async function fetchBooks() {
     try {
-      const res = await axios.get("http://localhost:3000/api/book");
+      const res = await axios.get("https://library-backend-ten.vercel.app/api/book");
       setBookData(res.data.books);
       setLoading(false);
     } catch (error) {

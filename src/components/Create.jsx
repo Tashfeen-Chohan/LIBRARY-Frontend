@@ -29,7 +29,7 @@ const Create = () => {
     e.preventDefault()
     if (title && author && publisher && category && copies && price){
       try {
-        await axios.post("http://localhost:3000/api/book", book)
+        await axios.post("https://library-backend-ten.vercel.app/api/book", book)
         fetchBooks()
         setBook({})
         navigate("/")

@@ -24,7 +24,7 @@ const Home = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/book?search=${search}`
+          `https://library-backend-ten.vercel.app/api/book?search=${search}`
         );
         if (res.data.books.length === 0) {
           setLoading(false);
@@ -56,7 +56,7 @@ const Home = () => {
   // SORTING BOOKS 
   async function sortBooks(){
     try {
-      const res = await axios.get(`http://localhost:3000/api/book?sort=${sortBy}`)
+      const res = await axios.get(`https://library-backend-ten.vercel.app/api/book?sort=${sortBy}`)
       setBookData(res.data.books)
     } catch (error) {
       setError(true)
@@ -70,7 +70,7 @@ const Home = () => {
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
     try {
-      await axios.delete("http://localhost:3000/api/book/" + id);
+      await axios.delete("https://library-backend-ten.vercel.app/api/book/" + id);
       fetchBooks();
     } catch (error) {
       console.log(error);
