@@ -26,7 +26,7 @@ const Home = () => {
         );
         setBookData(res.data.books);
         setLoading(false);
-        // setError(false);
+        setError(false);
       } catch (error) {
         setError(true);
         setLoading(false);
@@ -81,9 +81,12 @@ const Home = () => {
       {/* =====================> TABLE <===================== */}
 
       {/* ADD BOOK BUTTON */}
-      <div className="mt-5 relative w-full">
+      <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-5 flex justify-between items-center">
+        <div className="bg-slate-700  text-white inline-block px-2 py-1 rounded shadow-md">
+            Total Books: {bookData.length}
+          </div>
         <Link to={"/create"}>
-          <button className="absolute right-6 md:right-32 bg-blue-500 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
+          <button className=" bg-blue-500 shadow-md text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
             Add Book
           </button>
         </Link>
@@ -108,7 +111,7 @@ const Home = () => {
       </div>
 
       {/* BOOKS TABLE */}
-      <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl my-14 mx-auto">
+      <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-6 md:mt-3 mb-14 mx-auto">
         <h1 className="font-bold text-center mb-6 text-2xl md:text-3xl">
           BOOKS
         </h1>
