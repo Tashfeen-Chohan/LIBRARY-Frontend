@@ -26,14 +26,16 @@ const Home = () => {
         const res = await axios.get(
           `https://library-backend-ten.vercel.app/api/book?search=${search}`
         );
+        console.log(res)
         if (res.data.books.length === 0) {
           setLoading(false);
-          setSearchError(true);
           setBookData([]);
-        } else {
-          setBookData(res.data.books);
-          setLoading(false);
+          setSearchError(true)
+        }
+        if (res.data.books.length > 0){
           setSearchError(false);
+          setLoading(false);
+          setBookData(res.data.books);
         }
       } catch (error) {
         setError(true);
@@ -41,6 +43,7 @@ const Home = () => {
       }
       // IF SEARCH DIDN'T SEARCH , FETCH ALL BOOKS
     } else {
+      setSearchError(false)
       fetchBooks();
     }
   }
@@ -48,29 +51,33 @@ const Home = () => {
   useEffect(() => {
     // DEBOUNCING
     let timerOut = setTimeout(() => {
-      searchBook(); 
-    }, 400);
-    return () => clearTimeout(timerOut)
+      searchBook();
+    }, 300);
+    return () => clearTimeout(timerOut);
   }, [search]);
 
-  // SORTING BOOKS 
-  async function sortBooks(){
+  // SORTING BOOKS
+  async function sortBooks() {
     try {
-      const res = await axios.get(`https://library-backend-ten.vercel.app/api/book?sort=${sortBy}`)
-      setBookData(res.data.books)
+      const res = await axios.get(
+        `https://library-backend-ten.vercel.app/api/book?sort=${sortBy}`
+      );
+      setBookData(res.data.books);
     } catch (error) {
-      setError(true)
-      console.log(error)
+      setError(true);
+      console.log(error);
     }
   }
   useEffect(() => {
-    sortBooks()
-  }, [sortBy])
+    sortBooks();
+  }, [sortBy]);
 
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
     try {
-      await axios.delete("https://library-backend-ten.vercel.app/api/book/" + id);
+      await axios.delete(
+        "https://library-backend-ten.vercel.app/api/book/" + id
+      );
       fetchBooks();
     } catch (error) {
       console.log(error);
@@ -118,38 +125,41 @@ const Home = () => {
         </Link>
       </div>
 
-      {/* LOADING STATE */}
-      <div
-        className={
-          loading ? "mt-10 flex justify-center items-center" : "hidden"
-        }
-      >
-        <p className="font-bold text-yellow-500">Loading...</p>
-      </div>
-
-      {/* SEARCH ERROR STATE */}
-      <div
-        className={
-          searchError ? "flex mt-10 justify-center items-center" : "hidden"
-        }
-      >
-        <p className="font-bold text-red-500">Book not found!</p>
-      </div>
-
-      {/* ERROR STATE */}
-      <div
-        className={error ? "flex mt-10 justify-center items-center" : "hidden"}
-      >
-        <p className="font-bold text-red-500">
-          Error occured during fetching the data...
-        </p>
-      </div>
-
       {/* BOOKS TABLE */}
       <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-6 md:mt-3 mb-14 mx-auto">
         <h1 className="font-bold text-center mb-3 text-2xl md:text-3xl">
           BOOKS
         </h1>
+
+        {/* LOADING STATE */}
+        <div
+          className={
+            loading ? "mt-10 flex justify-center items-center" : "hidden"
+          }
+        >
+          <p className="font-bold text-yellow-500">Loading...</p>
+        </div>
+
+        {/* SEARCH ERROR STATE */}
+        <div
+          className={
+            searchError ? "flex mt-10 justify-center items-center" : "hidden"
+          }
+        >
+          <p className="font-bold text-red-500">Book not found!</p>
+        </div>
+
+        {/* ERROR STATE */}
+        <div
+          className={
+            error ? "flex mt-10 justify-center items-center" : "hidden"
+          }
+        >
+          <p className="font-bold text-red-500">
+            Error occured during fetching the data...
+          </p>
+        </div>
+
         {/* SORTING SELECT TAG */}
         <div className="flex justify-end items-center md:mb-3">
           <select
