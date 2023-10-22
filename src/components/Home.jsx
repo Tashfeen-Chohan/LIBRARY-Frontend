@@ -11,13 +11,44 @@ const Home = () => {
     setError,
     loading,
     error,
-    fetchBooks,
   } = useContext(BookContext);
   const [search, setSearch] = useState("");
   const [searchError, setSearchError] = useState(false);
   const [sortBy, setSortBy] = useState("");
 
-  // FILTERING BOOK [SEARCH FUNCTIONALITY]
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [totalBooks, setTotalBooks] = useState(0)
+  const [totalPages, setTotalPages] = useState(1);
+
+  // PAGINATION FUNCTIONALITY
+  async function paginatedResult(){
+    setLoading(true)
+    try {
+        const res = await axios.get(`https://library-backend-ten.vercel.app/api/book?page=${page}&limit=${limit}`)
+        setBookData(res.data.books)
+        setTotalPages(res.data.totalPages)
+        setTotalBooks(res.data.totalBooks)
+        setLoading(false)
+      } catch (error) {
+        setError(true)
+        console.log(error)
+      }
+    }
+    useEffect(() => {
+    paginatedResult()
+  }, [page, limit])
+
+  function handleNextPage(){
+    page < totalPages ? setPage(page + 1) : null
+  }
+
+  function handlePrevPage(){
+    page > 1 ? setPage(page - 1) : null
+  }
+
+
+  // SEARCH FUNCTIONALITY
   async function searchBook() {
     //  IF SEARCH QUERY FOUND
     if (search) {
@@ -32,10 +63,11 @@ const Home = () => {
           setBookData([]);
           setSearchError(true)
         }
-        if (res.data.books.length > 0){
+        else {
           setSearchError(false);
           setLoading(false);
           setBookData(res.data.books);
+          setTotalPages(res.data.totalPages)
         }
       } catch (error) {
         setError(true);
@@ -44,7 +76,8 @@ const Home = () => {
       // IF SEARCH DIDN'T SEARCH , FETCH ALL BOOKS
     } else {
       setSearchError(false)
-      fetchBooks();
+      paginatedResult()
+      // fetchBooks();
     }
   }
 
@@ -72,13 +105,15 @@ const Home = () => {
     sortBooks();
   }, [sortBy]);
 
+  
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
     try {
       await axios.delete(
         "https://library-backend-ten.vercel.app/api/book/" + id
       );
-      fetchBooks();
+      // fetchBooks();
+      paginatedResult()
     } catch (error) {
       console.log(error);
     }
@@ -274,6 +309,12 @@ const Home = () => {
             ))}
           </tbody>
         </table>
+        {/* Pagination controls */}
+        <div>
+          <button onClick={handlePrevPage} disabled={page === 1}>Previous</button>
+          <span>Page {page} of {totalPages}</span>
+          <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
+        </div>
       </div>
     </div>
   );
