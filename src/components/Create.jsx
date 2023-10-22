@@ -6,10 +6,12 @@ import { MdPublish } from "react-icons/md";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BookContext } from "../contexts/BookContext";
+
 
 const Create = () => {
   const { book, setBook, fetchBooks } = useContext(BookContext);
-  const [error, setError] = useState();
+  const [error, setError] = useState(); // for empty input fields
   const navigate = useNavigate();
   
   const { title, author, publisher, category, copies, price } = book;
