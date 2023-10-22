@@ -19,23 +19,35 @@ export const BookContextProvider = ({ children }) => {
   const [bookData, setBookData] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalBooks, setTotalBooks] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-
-  // FETCHING BOOKS FROM DATABASE
+  // FETCHING BOOKS FROM DATABASE WITH PAGINATION
   async function fetchBooks() {
+    setLoading(true);
     try {
-      const res = await axios.get("https://library-backend-ten.vercel.app/api/book");
+      const res = await axios.get(
+        `http://localhost:3000/api/book?page=${page}&limit=${limit}`
+      );
       setBookData(res.data.books);
+      setTotalPages(res.data.totalPages);
+      setTotalBooks(res.data.totalBooks);
       setLoading(false);
+      setError(false);
     } catch (error) {
       setLoading(false);
       setError(true);
+      console.log(error);
     }
   }
 
-  // useEffect(() => {  
-  //   fetchBooks();
-  // }, []);
+  useEffect(() => {
+    fetchBooks();
+  }, [page, limit]);
+  
 
   return (
     <BookContext.Provider
@@ -49,6 +61,14 @@ export const BookContextProvider = ({ children }) => {
         bookData,
         setBookData,
         fetchBooks,
+        sortBy,
+        setSortBy,
+        totalBooks,
+        setTotalBooks,
+        totalPages,
+        setTotalPages,
+        page,
+        setPage
       }}
     >
       {children}

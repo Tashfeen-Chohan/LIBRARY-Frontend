@@ -1,52 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BookContext } from "../contexts/BookContext";
 import axios from "axios";
+import { BookContext } from "../contexts/BookContext";
 
 const Home = () => {
   const {
+    page,
+    setPage,
+    totalPages,
+    setTotalPages,
+    totalBooks,
+    setTotalBooks,
     bookData,
     setBookData,
-    setLoading,
+    error,
     setError,
     loading,
-    error,
+    setLoading,
+    sortBy,
+    setSortBy,
+    fetchBooks
   } = useContext(BookContext);
-  const [search, setSearch] = useState("");
-  const [searchError, setSearchError] = useState(false);
-  const [sortBy, setSortBy] = useState("");
-
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [totalBooks, setTotalBooks] = useState(0)
-  const [totalPages, setTotalPages] = useState(1);
-
-  // PAGINATION FUNCTIONALITY
-  async function paginatedResult(){
-    setLoading(true)
-    try {
-        const res = await axios.get(`https://library-backend-ten.vercel.app/api/book?page=${page}&limit=${limit}`)
-        setBookData(res.data.books)
-        setTotalPages(res.data.totalPages)
-        setTotalBooks(res.data.totalBooks)
-        setLoading(false)
-      } catch (error) {
-        setError(true)
-        console.log(error)
-      }
-    }
-    useEffect(() => {
-    paginatedResult()
-  }, [page, limit])
-
-  function handleNextPage(){
-    page < totalPages ? setPage(page + 1) : null
-  }
-
-  function handlePrevPage(){
-    page > 1 ? setPage(page - 1) : null
-  }
-
+  const [search, setSearch] = useState()
+  const [searchError, setSearchError] = useState(false)
 
   // SEARCH FUNCTIONALITY
   async function searchBook() {
@@ -55,19 +31,19 @@ const Home = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `https://library-backend-ten.vercel.app/api/book?search=${search}`
+          `http://localhost:3000/api/book?search=${search}`
         );
-        console.log(res)
+        console.log(res);
         if (res.data.books.length === 0) {
           setLoading(false);
           setBookData([]);
-          setSearchError(true)
-        }
-        else {
+          setSearchError(true);
+        } else {
           setSearchError(false);
           setLoading(false);
           setBookData(res.data.books);
-          setTotalPages(res.data.totalPages)
+          setTotalBooks(res.data.totalBooks)
+          setTotalPages(res.data.totalPages);
         }
       } catch (error) {
         setError(true);
@@ -75,9 +51,8 @@ const Home = () => {
       }
       // IF SEARCH DIDN'T SEARCH , FETCH ALL BOOKS
     } else {
-      setSearchError(false)
-      paginatedResult()
-      // fetchBooks();
+      setSearchError(false);
+      fetchBooks();
     }
   }
 
@@ -85,19 +60,22 @@ const Home = () => {
     // DEBOUNCING
     let timerOut = setTimeout(() => {
       searchBook();
-    }, 300);
+    }, 400);
     return () => clearTimeout(timerOut);
   }, [search]);
 
   // SORTING BOOKS
   async function sortBooks() {
+    setLoading(true)
     try {
       const res = await axios.get(
-        `https://library-backend-ten.vercel.app/api/book?sort=${sortBy}`
+        `http://localhost:3000/api/book?sort=${sortBy}`
       );
       setBookData(res.data.books);
+      setLoading(false)
     } catch (error) {
       setError(true);
+      setLoading(false)
       console.log(error);
     }
   }
@@ -105,15 +83,11 @@ const Home = () => {
     sortBooks();
   }, [sortBy]);
 
-  
   // FUNCTION TO DELETE BOOK
   async function deleteBook(id) {
     try {
-      await axios.delete(
-        "https://library-backend-ten.vercel.app/api/book/" + id
-      );
-      // fetchBooks();
-      paginatedResult()
+      await axios.delete("http://localhost:3000/api/book/" + id);
+      fetchBooks();
     } catch (error) {
       console.log(error);
     }
@@ -151,7 +125,7 @@ const Home = () => {
       {/* ADD BOOK BUTTON */}
       <div className="w-[80%] md:w-[85%] 2xl:max-w-5xl mt-5 flex justify-between items-center">
         <div className="bg-slate-700  text-white inline-block px-2 py-1 rounded shadow-md">
-          Total Books: {bookData.length}
+          Total Books: {totalBooks}
         </div>
         <Link to={"/create"}>
           <button className=" bg-blue-500 shadow-md text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
@@ -196,7 +170,13 @@ const Home = () => {
         </div>
 
         {/* SORTING SELECT TAG */}
-        <div className="flex justify-end items-center md:mb-3">
+        <div
+          className={
+            loading || searchError
+              ? "hidden"
+              : "flex justify-end items-center md:mb-3"
+          }
+        >
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -212,7 +192,11 @@ const Home = () => {
             <option value="date asc">Date Oldest</option>
           </select>
         </div>
-        <table className="min-w-full border-collapse block md:table">
+        <table
+          className={
+            loading ? "hidden" : "min-w-full border-collapse block md:table"
+          }
+        >
           <thead className="block md:table-header-group">
             <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
               <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
@@ -309,11 +293,18 @@ const Home = () => {
             ))}
           </tbody>
         </table>
+
         {/* Pagination controls */}
         <div>
-          <button onClick={handlePrevPage} disabled={page === 1}>Previous</button>
-          <span>Page {page} of {totalPages}</span>
-          <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
+          <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+            Previous
+          </button>
+          <span>
+            Page {page} of {totalPages}
+          </span>
+          <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+            Next
+          </button>
         </div>
       </div>
     </div>

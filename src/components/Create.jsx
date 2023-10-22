@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { BookContext } from "../contexts/BookContext";
 import { BiSolidBookOpen, BiSolidCategory, BiSolidCopy } from "react-icons/bi";
 import { GiWhiteBook } from "react-icons/gi";
 import { FaPencilAlt } from "react-icons/fa";
@@ -29,7 +28,7 @@ const Create = () => {
     e.preventDefault()
     if (title && author && publisher && category && copies && price){
       try {
-        await axios.post("https://library-backend-ten.vercel.app/api/book", book)
+        await axios.post("http://localhost:3000/api/book", book)
         fetchBooks()
         setBook({})
         navigate("/")
