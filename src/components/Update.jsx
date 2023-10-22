@@ -20,7 +20,7 @@ const Update = () => {
   // FETCHING SINGLE BOOK FROM DATABASE
   async function fetchSingleBook(id){
     try {
-      const res = await axios.get("https://library-backend-ten.vercel.app/api/book/" +id)
+      const res = await axios.get("http://localhost:3000/api/book/" +id)
       console.log(res)
       setBook({
         title: res.data.book.title,
@@ -54,7 +54,7 @@ const Update = () => {
     e.preventDefault()
     if (title && author && publisher && category && copies && price){
       try {
-        await axios.put("https://library-backend-ten.vercel.app/api/book/" +id, book)
+        await axios.put("http://localhost:3000/api/book/" +id, book)
         fetchBooks()
         setBook({})
         navigate("/")

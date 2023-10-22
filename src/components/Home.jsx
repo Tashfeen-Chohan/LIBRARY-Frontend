@@ -194,7 +194,7 @@ const Home = () => {
         </div>
         <table
           className={
-            loading ? "hidden" : "min-w-full border-collapse block md:table"
+            loading || error || searchError ? "hidden" : "min-w-full border-collapse block md:table"
           }
         >
           <thead className="block md:table-header-group">
