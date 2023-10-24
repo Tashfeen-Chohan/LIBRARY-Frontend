@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
+import { AiFillBackward, AiFillForward } from "react-icons/ai";
 
 const Home = () => {
   const {
@@ -19,10 +20,13 @@ const Home = () => {
     setLoading,
     sortBy,
     setSortBy,
-    fetchBooks
+    nextPage,
+    prevPage,
+    fetchBooks,
   } = useContext(BookContext);
-  const [search, setSearch] = useState()
-  const [searchError, setSearchError] = useState(false)
+  const [search, setSearch] = useState();
+  const [searchError, setSearchError] = useState(false);
+  console.log(prevPage)
 
   // SEARCH FUNCTIONALITY
   async function searchBook() {
@@ -42,7 +46,7 @@ const Home = () => {
           setSearchError(false);
           setLoading(false);
           setBookData(res.data.books);
-          setTotalBooks(res.data.totalBooks)
+          setTotalBooks(res.data.totalBooks);
           setTotalPages(res.data.totalPages);
         }
       } catch (error) {
@@ -66,16 +70,16 @@ const Home = () => {
 
   // SORTING BOOKS
   async function sortBooks() {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(
         `http://localhost:3000/api/book?sort=${sortBy}`
       );
       setBookData(res.data.books);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       setError(true);
-      setLoading(false)
+      setLoading(false);
       console.log(error);
     }
   }
@@ -194,7 +198,9 @@ const Home = () => {
         </div>
         <table
           className={
-            loading || error || searchError ? "hidden" : "min-w-full border-collapse block md:table"
+            loading || error || searchError
+              ? "hidden"
+              : "min-w-full border-collapse block md:table"
           }
         >
           <thead className="block md:table-header-group">
@@ -294,18 +300,30 @@ const Home = () => {
           </tbody>
         </table>
 
-        {/* Pagination controls */}
-        <div>
-          <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-            Previous
-          </button>
-          <span>
-            Page {page} of {totalPages}
+        {/* PAGINATION */}
+        <div class="flex items-center space-x-2 mt-4">
+          <span class="text-gray-600">
+            Page { page } of { totalPages }
           </span>
-          <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
-            Next
+          <button
+            class="px-[2px] py-[2px] bg-slate-600 text-white rounded focus:outline-none"
+            onClick={() => setPage(page - 1)}
+            disabled={page === 1}
+          >
+            <AiFillBackward class="w-6 h-6" />
+          </button>
+          <span class="text-gray-600">{prevPage }</span>
+          <span class="flex items-center justify-center h-7 w-7 bg-blue-500 text-white rounded-full font-semibold ">{ page }</span>
+          <span class="text-gray-600">{ nextPage }</span>
+          <button
+            class="px-[2px] py-[2px] bg-slate-600 text-white rounded focus:outline-none"
+            onClick={() => setPage(page + 1)}
+            disabled={page === totalPages}
+          >
+            <AiFillForward class="w-6 h-6" />
           </button>
         </div>
+        
       </div>
     </div>
   );

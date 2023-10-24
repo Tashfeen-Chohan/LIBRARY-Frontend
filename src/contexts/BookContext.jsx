@@ -21,9 +21,11 @@ export const BookContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState();
   const [totalBooks, setTotalBooks] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [nextPage, setNextPage] = useState()
+  const [prevPage, setPrevPage] = useState()
 
   // FETCHING BOOKS FROM DATABASE WITH PAGINATION
   async function fetchBooks() {
@@ -35,6 +37,9 @@ export const BookContextProvider = ({ children }) => {
       setBookData(res.data.books);
       setTotalPages(res.data.totalPages);
       setTotalBooks(res.data.totalBooks);
+      setLimit(res.data.limit)
+      setNextPage(res.data.nextPage)
+      setPrevPage(res.data.prevPage)
       setLoading(false);
       setError(false);
     } catch (error) {
@@ -68,7 +73,9 @@ export const BookContextProvider = ({ children }) => {
         totalPages,
         setTotalPages,
         page,
-        setPage
+        setPage,
+        prevPage,
+        nextPage
       }}
     >
       {children}
