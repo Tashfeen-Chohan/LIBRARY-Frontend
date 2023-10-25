@@ -6,7 +6,7 @@ const Header = () => {
   const {search, setSearch} = useContext(BookContext)
 
   return (
-    <div className="flex justify-center items-center flex-col">
+    <>
       {/* =====================> TITLE & SEARCH <===================== */}
       <h1 className="text-2xl md:text-4xl md:mb-5 mt-14 px-2 font-bold text-center text-black">
         LIBRARY MANAGMENT SYSTEM
@@ -31,7 +31,7 @@ const Header = () => {
       </div>
       {/* HORIZONTAL LINE */}
       <div className="w-full bg-slate-500 h-[1px] mt-8 md:mt-14"></div>
-    </div>
+    </>
   );
 };
 

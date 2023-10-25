@@ -18,6 +18,7 @@ export const BookContextProvider = ({ children }) => {
   // BOOKS DATA
   const [bookData, setBookData] = useState([]);
   const [search, setSearch] = useState("")
+  const [searchError, setSearchError] = useState("")
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("");
@@ -42,6 +43,7 @@ export const BookContextProvider = ({ children }) => {
       setNextPage(res.data.nextPage)
       setPrevPage(res.data.prevPage)
       setLoading(false);
+      setSearchError(false)
       setError(false);
     } catch (error) {
       setLoading(false);
@@ -49,10 +51,69 @@ export const BookContextProvider = ({ children }) => {
       console.log(error);
     }
   }
-
   useEffect(() => {
     fetchBooks();
   }, [page, limit]);
+
+  // SEARCH FUNCTIONALITY
+  async function searchBook() {
+    //  IF SEARCH QUERY FOUND
+    if (search) {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/book?search=${search}`
+        );
+        if (res.data.books.length === 0) {
+          setLoading(false);
+          setBookData([]);
+          setSearchError(true);
+        } else {
+          setSearchError(false);
+          setLoading(false);
+          setBookData(res.data.books);
+          setTotalBooks(res.data.totalBooks);
+          setTotalPages(res.data.totalPages);
+        }
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+      // IF SEARCH DIDN'T SEARCH , FETCH ALL BOOKS
+    } else {
+      setSearchError(false);
+      fetchBooks();
+    }
+  }
+
+  useEffect(() => {
+    // DEBOUNCING
+    let timerOut = setTimeout(() => {
+      searchBook();
+    }, 400);
+    return () => clearTimeout(timerOut);
+  }, [search]);
+
+  // SORTING BOOKS
+  async function sortBooks() {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/book?sort=${sortBy}`
+      );
+      setBookData(res.data.books);
+      setLoading(false);
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    sortBooks();
+  }, [sortBy]);
+
+
   
 
   return (
@@ -78,7 +139,9 @@ export const BookContextProvider = ({ children }) => {
         prevPage,
         nextPage,
         search,
-        setSearch
+        setSearch,
+        searchError,
+        setSearchError
       }}
     >
       {children}
