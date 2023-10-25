@@ -26,7 +26,6 @@ const Home = () => {
   } = useContext(BookContext);
   const [search, setSearch] = useState();
   const [searchError, setSearchError] = useState(false);
-  console.log(prevPage)
 
   // SEARCH FUNCTIONALITY
   async function searchBook() {
