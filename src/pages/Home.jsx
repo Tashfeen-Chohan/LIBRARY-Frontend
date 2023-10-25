@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
-import { AiFillBackward, AiFillForward } from "react-icons/ai";
+import Pagination from "../components/Pagination";
 
 const Home = () => {
   const {
@@ -300,7 +300,8 @@ const Home = () => {
         </table>
 
         {/* PAGINATION */}
-        <div class="flex items-center space-x-2 mt-4">
+        <Pagination/>
+        {/* <div class="flex items-center space-x-2 mt-4">
           <span class="text-gray-600">
             Page { page } of { totalPages }
           </span>
@@ -321,7 +322,7 @@ const Home = () => {
           >
             <AiFillForward class="w-6 h-6" />
           </button>
-        </div>
+        </div> */}
         
       </div>
     </div>
