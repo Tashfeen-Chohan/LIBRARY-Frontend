@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Create from "./pages/Create";
 import Update from "./pages/Update";
-import Error from "./components/Error";
+import Error from "./pages/Error";
 import { BookContextProvider } from "./contexts/BookContext";
 
 const App = () => {
