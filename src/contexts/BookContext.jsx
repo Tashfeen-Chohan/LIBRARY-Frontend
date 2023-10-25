@@ -17,6 +17,7 @@ export const BookContextProvider = ({ children }) => {
   });
   // BOOKS DATA
   const [bookData, setBookData] = useState([]);
+  const [search, setSearch] = useState("")
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("");
@@ -75,7 +76,9 @@ export const BookContextProvider = ({ children }) => {
         page,
         setPage,
         prevPage,
-        nextPage
+        nextPage,
+        search,
+        setSearch
       }}
     >
       {children}
