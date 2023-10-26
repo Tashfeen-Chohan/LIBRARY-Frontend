@@ -25,8 +25,7 @@ export default function Navbar() {
               <img src={Logo} alt="Logo" width={50} />
             </a>
 
-            {/* USER INFORMATION */}
-            {/* MOBILE LOGOUT BUTTON */}
+            {/* MOBILE LOGOUT & USER ICON  */}
             <div className="flex justify-center items-center gap-5 ml-20">
               <img src={User} alt="User" className="lg:hidden h-7 w-7" />
               <button onClick={logout} className="lg:hidden bg-gray-200 rounded font-bold text-slate-800 px-2 py-[2px] hover:bg-white transition-colors duration-300">Logout</button>
@@ -59,7 +58,10 @@ export default function Navbar() {
                 CONTACT
               </li>
             </ul>
-            <button onClick={logout} className="hidden lg:inline-block ml-10 bg-gray-200 rounded text-lg font-bold text-slate-800 px-2 py-[1px] hover:bg-white transition-colors duration-300">Logout</button>
+            <div className="flex justify-center items-center gap-6 ml-10">
+              <img src={User} alt="User Icon" width={35} />
+              <button onClick={logout} className="hidden lg:inline-block bg-gray-200 rounded text-lg font-bold text-slate-800 px-2 py-[1px] hover:bg-white transition-colors duration-300">Logout</button>
+            </div>
           </div>
 
         </div>
