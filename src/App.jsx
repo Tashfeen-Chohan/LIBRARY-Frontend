@@ -16,7 +16,7 @@ const App = () => {
     <>
       <BookContextProvider>
         <BrowserRouter>
-          <Navbar/>
+          { user && <Navbar/>}
           <Routes>
             {/* <Route path="/" element={user ? <Home/> : <Login/>} /> */}
             {user && <Route path="/" element={<Home/>}/>}

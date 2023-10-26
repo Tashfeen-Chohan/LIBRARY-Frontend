@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <>
       {/* =====================> TITLE & SEARCH <===================== */}
-      <h1 className="text-2xl md:text-4xl md:mb-5 mt-14 px-2 font-bold text-center text-black">
+      <h1 className="text-2xl md:text-4xl mt-5 md:mb-5 md:mt-10 px-2 font-bold text-center text-black">
         LIBRARY MANAGMENT SYSTEM
       </h1>
       {/* SEARCH BOX */}
@@ -30,7 +30,7 @@ const Header = () => {
         </button>
       </div>
       {/* HORIZONTAL LINE */}
-      <div className="w-full bg-slate-500 h-[1px] mt-8 md:mt-14"></div>
+      <div className="w-full bg-slate-500 h-[1px] mt-7 md:mt-10"></div>
     </>
   );
 };

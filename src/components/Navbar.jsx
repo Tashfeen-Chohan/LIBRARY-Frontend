@@ -14,16 +14,20 @@ export default function Navbar() {
     <>
       <nav className="relative flex flex-wrap items-center px-2 py-1 bg-slate-800 text-white mb-3">
 
-        {/* LOGO */}
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-center">
           <div className="md:pl-28 w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+            {/* LOGO */}
             <a
               className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
               href="#pablo"
             >
               <img src={Logo} alt="Logo" width={50} />
             </a>
-            
+
+            {/* MOBILE LOGOUT BUTTON */}
+            <div className="flex justify-center items-center ml-28">
+              <button onClick={logout} className="lg:hidden bg-gray-200 rounded font-bold text-slate-800 px-2 py-[2px] hover:bg-white transition-colors duration-300">Logout</button>
+            </div>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
