@@ -8,6 +8,7 @@ import Error from "./pages/Error";
 import { BookContextProvider } from "./contexts/BookContext";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   const user = localStorage.getItem("token")
@@ -15,6 +16,7 @@ const App = () => {
     <>
       <BookContextProvider>
         <BrowserRouter>
+          <Navbar/>
           <Routes>
             {/* <Route path="/" element={user ? <Home/> : <Login/>} /> */}
             {user && <Route path="/" element={<Home/>}/>}
