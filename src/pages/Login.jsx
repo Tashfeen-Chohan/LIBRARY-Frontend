@@ -28,6 +28,7 @@ const Login = () => {
       try {
         const res = await axios.post("http://localhost:3000/api/auth", user)
         localStorage.setItem("token", res.data.token)
+        window.location = "/"
         setUser({})
         navigate("/")
       } catch (error) {
@@ -39,6 +40,7 @@ const Login = () => {
 
   }
 
+ 
   return (
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
@@ -58,7 +60,7 @@ const Login = () => {
 
               {/* EMAIL */}
               <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="email" className="text-2xl">
+                <label htmlFor="email" className="text-2xl pt-2">
                   <MdEmail />
                 </label>
                 <input
@@ -74,7 +76,7 @@ const Login = () => {
 
               {/* PASSWORD */}
               <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="password" className="text-2xl">
+                <label htmlFor="password" className="text-2xl pt-2">
                   <BsFillKeyFill />
                 </label>
                 <input
