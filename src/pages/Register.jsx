@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { BiSolidBookOpen } from "react-icons/bi";
-import { FaPencilAlt, FaUserPlus } from "react-icons/fa";
-import { MdPublish } from "react-icons/md";
+import {  FaUserPlus } from "react-icons/fa";
+import {  MdEmail } from "react-icons/md";
+import {BsFillPersonFill, BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -56,8 +56,8 @@ const Register = () => {
             <form onSubmit={handleSubmit} className="p-8">
               {/* NAME */}
               <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="name" className="text-2xl">
-                  <BiSolidBookOpen />
+                <label htmlFor="name" className="text-2xl pt-2">
+                  <BsFillPersonFill />
                 </label>
                 <input
                   className="border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black"
@@ -73,8 +73,8 @@ const Register = () => {
 
               {/* EMAIL */}
               <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="email" className="text-2xl">
-                  <FaPencilAlt />
+                <label htmlFor="email" className="text-2xl pt-2">
+                  <MdEmail />
                 </label>
                 <input
                   className="border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black"
@@ -89,8 +89,8 @@ const Register = () => {
 
               {/* PASSWORD */}
               <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="password" className="text-2xl">
-                  <MdPublish />
+                <label htmlFor="password" className="text-2xl pt-2">
+                  <BsFillKeyFill />
                 </label>
                 <input
                   className="border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black"
