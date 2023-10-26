@@ -1,6 +1,7 @@
 import React from "react";
 import {GiHamburgerMenu} from "react-icons/gi"
 import Logo from "../assets/logo.png"
+import User from '../assets/user.png'
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -24,8 +25,10 @@ export default function Navbar() {
               <img src={Logo} alt="Logo" width={50} />
             </a>
 
+            {/* USER INFORMATION */}
             {/* MOBILE LOGOUT BUTTON */}
-            <div className="flex justify-center items-center ml-28">
+            <div className="flex justify-center items-center gap-5 ml-20">
+              <img src={User} alt="User" className="lg:hidden h-7 w-7" />
               <button onClick={logout} className="lg:hidden bg-gray-200 rounded font-bold text-slate-800 px-2 py-[2px] hover:bg-white transition-colors duration-300">Logout</button>
             </div>
             <button
