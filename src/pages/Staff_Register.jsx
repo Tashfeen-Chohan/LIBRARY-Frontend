@@ -5,8 +5,8 @@ import {BsFillPersonFill, BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Register = () => {
-  const [user, setUser] = useState({
+const Staff_Register = () => {
+  const [staff, setStaff] = useState({
     name: "",
     email: "",
     password: "",
@@ -16,19 +16,19 @@ const Register = () => {
 
   function handleChange(e) {
     const {name, value} = e.target
-    setUser({
-      ...user,
+    setStaff({
+      ...staff,
       [name]: value
     })
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const {name, email, password} = user;
+    const {name, email, password} = staff;
     if (name && email && password){
       try {
-        await axios.post("http://localhost:3000/api/users", user)
-        setUser({})
+        await axios.post("http://localhost:3000/api/staff", staff)
+        setStaff({})
         navigate("/login")
       } catch (error) {
         setError(error.response.data.message)
@@ -43,7 +43,7 @@ const Register = () => {
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
         <h1 className="font-bold text-3xl md:text-4xl my-5 text-center">
-          Sign up
+          STAFF SIGN UP
         </h1>
 
         <div className="flex justify-center items-center gap-5 flex-col md:flex-row px-5 ">
@@ -66,7 +66,7 @@ const Register = () => {
                   placeholder="Full Name"
                   name="name"
                   id="name"
-                  value={user.name}
+                  value={staff.name}
                   onChange={handleChange}
                 />
               </div>
@@ -82,7 +82,7 @@ const Register = () => {
                   placeholder="Your Email"
                   name="email"
                   id="email"
-                  value={user.email}
+                  value={staff.email}
                   onChange={handleChange}
                 />
               </div>
@@ -98,7 +98,7 @@ const Register = () => {
                   placeholder="Your Password"
                   name="password"
                   id="password"
-                  value={user.password}
+                  value={staff.password}
                   onChange={handleChange}
                 />
               </div>
@@ -134,7 +134,7 @@ const Register = () => {
                 <div>Already have an account? </div>
                 {/* GO BACK BUTTN */}
                 <div className="mt-2">
-                  <Link to={"/login"}>
+                  <Link to={"/login-staff"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
                       Sign in
                     </button>
@@ -150,4 +150,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Staff_Register;

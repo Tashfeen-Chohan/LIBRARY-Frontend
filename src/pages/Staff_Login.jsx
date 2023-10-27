@@ -5,8 +5,8 @@ import {BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
-  const [user, setUser] = useState({
+const Staff_Login = () => {
+  const [staff, setStaff] = useState({
     email: "",
     password: "",
   });
@@ -15,22 +15,26 @@ const Login = () => {
 
   function handleChange(e) {
     const {name, value} = e.target
-    setUser({
-      ...user,
+    setStaff({
+      ...staff,
       [name]: value
     })
   }
 
+  axios.defaults.withCredentials = true;
   async function handleSubmit(e) {
     e.preventDefault()
-    const {email, password} = user;
+    const {email, password} = staff;
     if (email && password){
       try {
-        const res = await axios.post("http://localhost:3000/api/auth", user)
-        localStorage.setItem("token", res.data.token)
-        window.location = "/"
-        setUser({})
-        navigate("/")
+        const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
+        if (res.data.role === "librarian"){
+          navigate("/dashboard-librarian")
+          setStaff({})
+        } else if (res.data.role === "admin"){
+          navigate("/dashboard-admin")
+          setStaff({})
+        }
       } catch (error) {
         setError(error.response.data.message)
       }
@@ -45,7 +49,7 @@ const Login = () => {
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
         <h1 className="font-bold text-3xl md:text-4xl my-5 text-center">
-          Sign in
+          STAFF LOGIN
         </h1>
 
         <div className="flex justify-center items-center gap-5 flex-col md:flex-row px-5 ">
@@ -69,7 +73,7 @@ const Login = () => {
                   placeholder="Your Email"
                   name="email"
                   id="email"
-                  value={user.email}
+                  value={staff.email}
                   onChange={handleChange}
                 />
               </div>
@@ -85,7 +89,7 @@ const Login = () => {
                   placeholder="Your Password"
                   name="password"
                   id="password"
-                  value={user.password}
+                  value={staff.password}
                   onChange={handleChange}
                 />
               </div>
@@ -120,7 +124,7 @@ const Login = () => {
               <div className="flex justify-between items-center">
                 <div>Don't have any account? </div>
                 <div className="mt-2">
-                  <Link to={"/register"}>
+                  <Link to={"/register-staff"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
                       Sign up
                     </button>
@@ -136,4 +140,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Staff_Login;
