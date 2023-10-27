@@ -16,11 +16,13 @@ const App = () => {
     <>
       <BookContextProvider>
         <BrowserRouter>
-          { user && <Navbar/>}
+          {/* { user && <Navbar/>} */}
+          <Navbar/>
           <Routes>
             {/* <Route path="/" element={user ? <Home/> : <Login/>} /> */}
-            {user && <Route path="/" element={<Home/>}/>}
-            <Route path="/" element={<Navigate replace to="/login"/>}/>
+            {/* {user && <Route path="/" element={<Home/>}/>} */}
+            {/* <Route path="/" element={<Navigate replace to="/login"/>}/> */}
+            <Route path="/" element={<Home/>}/>
             <Route path="/create" element={<Create />} />
             <Route path="/update/:id" element={<Update />} />
             <Route path="/register" element={<Register/>}/>
