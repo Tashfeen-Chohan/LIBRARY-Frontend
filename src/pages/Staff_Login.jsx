@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
 
-const Staff_Login = ({setToken}) => {
+const Staff_Login = ({setToken, setRole}) => {
   const [staff, setStaff] = useState({
     email: "",
     password: "",
@@ -29,20 +29,23 @@ const Staff_Login = ({setToken}) => {
     if (email && password){
       try {
         const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
-        // if (res.data.role === "librarian"){
-        //   navigate("/dashboard-librarian")
-        //   setStaff({})
-        // } else if (res.data.role === "admin"){
-        //   navigate("/dashboard-admin")
-        //   setStaff({})
-        // }
-        // else {
-        //   navigate("/")
-        //   setStaff({})
-        // }
-        setToken(res.data.token)
-        setStaff({})
-        navigate("/")
+        if (res.data.role === "librarian"){
+          setStaff({})
+          setToken(res.data.token)
+          setRole(res.data.role)
+          navigate("/dashboard-librarian")
+        } else if (res.data.role === "admin"){
+          setStaff({})
+          setToken(res.data.token)
+          setRole(res.data.role)
+          navigate("/dashboard-admin")
+        }
+        else {
+          setStaff({})
+          setToken(res.data.token)
+          setRole(res.data.role)
+          navigate("/")
+        }
       } catch (error) {
         setError(error.response.data.message)
       }

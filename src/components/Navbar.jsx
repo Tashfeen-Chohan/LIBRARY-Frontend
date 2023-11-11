@@ -2,12 +2,16 @@ import React from "react";
 import {GiHamburgerMenu} from "react-icons/gi"
 import Logo from "../assets/logo.png"
 import User from '../assets/user.png'
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar({setToken}) {
+export default function Navbar({setToken, setRole}) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const navigate = useNavigate()
 
   function logout(){
     setToken(null)
+    setRole(null)
+    navigate("/")
   }
 
   return (
@@ -47,8 +51,8 @@ export default function Navbar({setToken}) {
             id="example-navbar-danger"
           >
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              <li className="px-3 py-2 flex items-center text-xs md:text-lg uppercase  leading-snug text-white hover:opacity-75">
-                HOME
+              <li  className="px-3 py-2 flex items-center text-xs md:text-lg uppercase  leading-snug text-white hover:opacity-75">
+                <Link to={"/"}>HOME</Link>
               </li>
               <li className="px-3 py-2 flex items-center text-xs md:text-lg uppercase leading-snug text-white hover:opacity-75">
                 ABOUT

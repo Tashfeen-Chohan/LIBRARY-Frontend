@@ -14,19 +14,20 @@ import Admin_Dashboard from "./pages/Admin_Dashboard"
 
 const App = () => {
   const [token, setToken] = useState(null)
+  const [role, setRole] = useState(null)
   return (
     <>
       <BookContextProvider>
         <BrowserRouter>
-          { token && <Navbar setToken={setToken}/>}
+          { token && <Navbar setToken={setToken} setRole={setRole}/>}
           <Routes>
-            <Route path="/" element={token ? <Home setToken={setToken}/> : <Staff_Login setToken={setToken}/>} />
+            <Route path="/" element={token ? <Home /> : <Staff_Login setToken={setToken} setRole={setRole}/>} />
             <Route path="/create" element={<Create />} />
             <Route path="/update/:id" element={<Update />} />
             <Route path="/register-staff" element={<Staff_Register/>}/>
             <Route path="/login-staff" element={<Staff_Login setToken={setToken}/>}/>
-            <Route path="/dashboard-librarian" element={<Librarian_Dashboard/>}/>
-            <Route path="/dashboard-admin" element={<Admin_Dashboard/>}/>
+            <Route path="/dashboard-librarian" element={role ? <Librarian_Dashboard/> : <Staff_Login/>}/>
+            <Route path="/dashboard-admin" element={role ? <Admin_Dashboard/> : <Staff_Login/>}/>
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>
