@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import {GiHamburgerMenu} from "react-icons/gi"
 import Logo from "../assets/logo.png"
 import User from '../assets/user.png'
 import { Link, useNavigate } from "react-router-dom";
+import { BookContext } from "../contexts/BookContext";
 
-export default function Navbar({setToken, setRole}) {
+export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const navigate = useNavigate()
+  const {setToken, setRole} = useContext(BookContext)
 
   function logout(){
     setToken(null)

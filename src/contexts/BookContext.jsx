@@ -29,6 +29,7 @@ export const BookContextProvider = ({ children }) => {
   const [nextPage, setNextPage] = useState()
   const [prevPage, setPrevPage] = useState()
   const [token, setToken] = useState(null)
+  const [role, setRole] = useState(null)
 
   // FETCHING BOOKS FROM DATABASE WITH PAGINATION
   async function fetchBooks() {
@@ -144,7 +145,9 @@ export const BookContextProvider = ({ children }) => {
         searchError,
         setSearchError,
         token,
-        setToken
+        setToken,
+        role,
+        setRole
       }}
     >
       {children}

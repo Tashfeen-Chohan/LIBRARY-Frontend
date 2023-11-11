@@ -6,12 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
 
-const Staff_Login = ({setToken, setRole}) => {
+const Staff_Login = () => {
   const [staff, setStaff] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState();
+  const {setToken, setRole} = useContext(BookContext)
   const navigate = useNavigate()
 
   function handleChange(e) {
