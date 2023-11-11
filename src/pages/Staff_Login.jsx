@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaUserLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import {BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BookContext } from "../contexts/BookContext";
 
-const Staff_Login = () => {
+const Staff_Login = ({setToken}) => {
   const [staff, setStaff] = useState({
     email: "",
     password: "",
@@ -28,13 +29,20 @@ const Staff_Login = () => {
     if (email && password){
       try {
         const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
-        if (res.data.role === "librarian"){
-          navigate("/dashboard-librarian")
-          setStaff({})
-        } else if (res.data.role === "admin"){
-          navigate("/dashboard-admin")
-          setStaff({})
-        }
+        // if (res.data.role === "librarian"){
+        //   navigate("/dashboard-librarian")
+        //   setStaff({})
+        // } else if (res.data.role === "admin"){
+        //   navigate("/dashboard-admin")
+        //   setStaff({})
+        // }
+        // else {
+        //   navigate("/")
+        //   setStaff({})
+        // }
+        setToken(res.data.token)
+        setStaff({})
+        navigate("/")
       } catch (error) {
         setError(error.response.data.message)
       }

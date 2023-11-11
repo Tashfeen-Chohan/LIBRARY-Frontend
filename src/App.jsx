@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
@@ -13,22 +13,18 @@ import Librarian_Dashboard from "./pages/Librarian_Dashboard"
 import Admin_Dashboard from "./pages/Admin_Dashboard"
 
 const App = () => {
-  const user = localStorage.getItem("token")
+  const [token, setToken] = useState(null)
   return (
     <>
       <BookContextProvider>
         <BrowserRouter>
-          {/* { user && <Navbar/>} */}
-          <Navbar/>
+          { token && <Navbar setToken={setToken}/>}
           <Routes>
-            {/* <Route path="/" element={user ? <Home/> : <Login/>} /> */}
-            {/* {user && <Route path="/" element={<Home/>}/>} */}
-            {/* <Route path="/" element={<Navigate replace to="/login"/>}/> */}
-            <Route path="/" element={<Home/>}/>
+            <Route path="/" element={token ? <Home setToken={setToken}/> : <Staff_Login setToken={setToken}/>} />
             <Route path="/create" element={<Create />} />
             <Route path="/update/:id" element={<Update />} />
             <Route path="/register-staff" element={<Staff_Register/>}/>
-            <Route path="/login-staff" element={<Staff_Login/>}/>
+            <Route path="/login-staff" element={<Staff_Login setToken={setToken}/>}/>
             <Route path="/dashboard-librarian" element={<Librarian_Dashboard/>}/>
             <Route path="/dashboard-admin" element={<Admin_Dashboard/>}/>
             <Route path="*" element={<Error />} />

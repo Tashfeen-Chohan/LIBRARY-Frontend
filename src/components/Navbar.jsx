@@ -3,12 +3,11 @@ import {GiHamburgerMenu} from "react-icons/gi"
 import Logo from "../assets/logo.png"
 import User from '../assets/user.png'
 
-export default function Navbar() {
+export default function Navbar({setToken}) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
 
   function logout(){
-    localStorage.removeItem("token")
-    window.location.reload()
+    setToken(null)
   }
 
   return (
