@@ -43,7 +43,7 @@ const User_Register = () => {
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
         <h1 className="font-bold text-3xl md:text-4xl my-5 text-center">
-          STAFF SIGN UP
+          SIGN UP
         </h1>
 
         <div className="flex justify-center items-center gap-5 flex-col md:flex-row px-5 ">
