@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import {  FaUserPlus } from "react-icons/fa";
-import {  MdEmail } from "react-icons/md";
-import {BsFillPersonFill, BsFillKeyFill} from 'react-icons/bs'
+import React, { useContext, useState } from "react";
+import { FaUserLock } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import {BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BookContext } from "../contexts/BookContext";
+import Cookies from "js-cookie";
 
-const Staff_Register = () => {
+const User_Login = () => {
   const [staff, setStaff] = useState({
-    name: "",
     email: "",
     password: "",
   });
   const [error, setError] = useState();
+  const {setRole} = useContext(BookContext)
   const navigate = useNavigate()
 
   function handleChange(e) {
@@ -22,16 +24,33 @@ const Staff_Register = () => {
     })
   }
 
+  axios.defaults.withCredentials = true;
   async function handleSubmit(e) {
     e.preventDefault()
-    const {name, email, password} = staff;
-    if (name && email && password){
+    const {email, password} = staff;
+    if (email && password){
       try {
-        await axios.post("http://localhost:3000/api/staff", staff)
-        setStaff({})
-        navigate("/login")
+        const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
+        if (res.data.role === "librarian"){
+          setStaff({})
+          // setToken(Cookies.get("token"))
+          setRole(res.data.role)
+          navigate("/dashboard-librarian")
+        } else if (res.data.role === "admin"){
+          setStaff({})
+          // setToken(Cookies.get("token"))
+          setRole(res.data.role)
+          navigate("/dashboard-admin")
+        }
+        else {
+          setStaff({})
+          // setToken(Cookies.get("token"))
+          setRole(res.data.role)
+          navigate("/")
+        }
       } catch (error) {
-        setError(error.response.data.message)
+        // setError(error.response.data.message)
+        console.log(error)
       }
     } else {
       setError("Please fill all the fields!")
@@ -39,37 +58,23 @@ const Staff_Register = () => {
 
   }
 
+ 
   return (
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
         <h1 className="font-bold text-3xl md:text-4xl my-5 text-center">
-          STAFF SIGN UP
+          STAFF LOGIN
         </h1>
 
         <div className="flex justify-center items-center gap-5 flex-col md:flex-row px-5 ">
           <div className="flex-1 flex justify-center items-center md:mt-[-50px]">
-            <FaUserPlus size={130} />            
+            <FaUserLock size={130} />            
           </div>
 
-          {/* REGISTRATION FORM */}
+          {/* LOGIN FORM */}
           <div className="md:flex-1">
             <form onSubmit={handleSubmit} className="p-8">
-              {/* NAME */}
-              <div className="flex justify-center items-center gap-6 mb-4">
-                <label htmlFor="name" className="text-2xl pt-2">
-                  <BsFillPersonFill />
-                </label>
-                <input
-                  className="border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black"
-                  type="text"
-                  autoFocus={true}
-                  placeholder="Full Name"
-                  name="name"
-                  id="name"
-                  value={staff.name}
-                  onChange={handleChange}
-                />
-              </div>
+              
 
               {/* EMAIL */}
               <div className="flex justify-center items-center gap-6 mb-4">
@@ -112,13 +117,13 @@ const Staff_Register = () => {
                 <p className="text-red-500 font-bold">{error}</p>
               </div>
 
-              {/* SIGN UP BUTTON */}
+              {/* SIGN IN BUTTON */}
               <div className="pt-2 w-full">
                 <button
                   type="submit"
                   className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500"
                 >
-                  Sign up
+                  Sign in
                 </button>
               </div>
 
@@ -129,14 +134,13 @@ const Staff_Register = () => {
                 <hr />
               </div>
 
-              {/* SIGN IN BUTTON */}
+              {/* SIGN UP BUTTON */}
               <div className="flex justify-between items-center">
-                <div>Already have an account? </div>
-                {/* GO BACK BUTTN */}
+                <div>Don't have any account? </div>
                 <div className="mt-2">
-                  <Link to={"/login-staff"}>
+                  <Link to={"/register-staff"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
-                      Sign in
+                      Sign up
                     </button>
                   </Link>
                 </div>
@@ -150,4 +154,4 @@ const Staff_Register = () => {
   );
 };
 
-export default Staff_Register;
+export default User_Login;

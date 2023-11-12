@@ -4,18 +4,37 @@ import Logo from "../assets/logo.png"
 import User from '../assets/user.png'
 import { Link, useNavigate } from "react-router-dom";
 import { BookContext } from "../contexts/BookContext";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const navigate = useNavigate()
-  const {setToken, setRole} = useContext(BookContext)
+  const {isLoggedIn, setIsLoggedIn} = useContext(BookContext)
+
+  // axios.defaults.withCredentials = true
+  // async function logout(){
+  //   // setToken(Cookies.remove("token"))
+
+  //   try {
+  //     const res = await axios.post("http://localhost:3000/logout")
+  //     setRole(null)
+  //     navigate("/login-staff")
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  //   // Cookies.remove("token")
+  //   // setToken(null)
+    
+  // }
 
   function logout(){
-    setToken(null)
-    setRole(null)
-    navigate("/")
+    Cookies.remove("token", {path: "/"})
+    setIsLoggedIn(false)
   }
 
+ 
   return (
     <>
       <nav className="relative flex flex-wrap items-center px-2 py-1 bg-slate-800 text-white mb-3">

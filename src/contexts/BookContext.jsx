@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // CREATING BOOK CONTEXT
 export const BookContext = createContext();
@@ -28,8 +29,18 @@ export const BookContextProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [nextPage, setNextPage] = useState()
   const [prevPage, setPrevPage] = useState()
-  const [token, setToken] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [role, setRole] = useState(null)
+
+  function isAuthenticated(){
+    const token = Cookies.get("token")
+    return !!token;
+  }
+
+  useEffect(() => {
+    setIsLoggedIn(isAuthenticated())
+  }, [isLoggedIn])
+
 
   // FETCHING BOOKS FROM DATABASE WITH PAGINATION
   async function fetchBooks() {
@@ -144,8 +155,8 @@ export const BookContextProvider = ({ children }) => {
         setSearch,
         searchError,
         setSearchError,
-        token,
-        setToken,
+        isLoggedIn,
+        setIsLoggedIn,
         role,
         setRole
       }}

@@ -1,53 +1,35 @@
-import React, { useContext, useState } from "react";
-import { FaUserLock } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import {BsFillKeyFill} from 'react-icons/bs'
+import React, { useState } from "react";
+import {  FaUserPlus } from "react-icons/fa";
+import {  MdEmail } from "react-icons/md";
+import {BsFillPersonFill, BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BookContext } from "../contexts/BookContext";
-import Cookies from "js-cookie";
 
-const Staff_Login = () => {
-  const [staff, setStaff] = useState({
+const User_Register = () => {
+  const [user, setUser] = useState({
+    name: "",
     email: "",
     password: "",
   });
   const [error, setError] = useState();
-  const {setToken, setRole} = useContext(BookContext)
   const navigate = useNavigate()
 
   function handleChange(e) {
     const {name, value} = e.target
-    setStaff({
-      ...staff,
+    setUser({
+      ...user,
       [name]: value
     })
   }
 
-  axios.defaults.withCredentials = true;
   async function handleSubmit(e) {
     e.preventDefault()
-    const {email, password} = staff;
-    if (email && password){
+    const {name, email, password} = user;
+    if (name && email && password){
       try {
-        const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
-        if (res.data.role === "librarian"){
-          setStaff({})
-          // setToken(Cookies.get("token"))
-          setRole(res.data.role)
-          navigate("/dashboard-librarian")
-        } else if (res.data.role === "admin"){
-          setStaff({})
-          // setToken(Cookies.get("token"))
-          setRole(res.data.role)
-          navigate("/dashboard-admin")
-        }
-        else {
-          setStaff({})
-          // setToken(Cookies.get("token"))
-          setRole(res.data.role)
-          navigate("/")
-        }
+        await axios.post("http://localhost:3000/api/userRegister", user)
+        setUser({})
+        navigate("/login")
       } catch (error) {
         setError(error.response.data.message)
       }
@@ -57,23 +39,37 @@ const Staff_Login = () => {
 
   }
 
- 
   return (
     <div className="min-h-screen flex justify-center items-center flex-col">
       <div className="shadow-lg  md:py-5 w-[90%] md:max-w-xl rounded-md">
         <h1 className="font-bold text-3xl md:text-4xl my-5 text-center">
-          STAFF LOGIN
+          STAFF SIGN UP
         </h1>
 
         <div className="flex justify-center items-center gap-5 flex-col md:flex-row px-5 ">
           <div className="flex-1 flex justify-center items-center md:mt-[-50px]">
-            <FaUserLock size={130} />            
+            <FaUserPlus size={130} />            
           </div>
 
-          {/* LOGIN FORM */}
+          {/* REGISTRATION FORM */}
           <div className="md:flex-1">
             <form onSubmit={handleSubmit} className="p-8">
-              
+              {/* NAME */}
+              <div className="flex justify-center items-center gap-6 mb-4">
+                <label htmlFor="name" className="text-2xl pt-2">
+                  <BsFillPersonFill />
+                </label>
+                <input
+                  className="border-b-2 text-lg px-1 border-gray-300 outline-none focus:border-black"
+                  type="text"
+                  autoFocus={true}
+                  placeholder="Full Name"
+                  name="name"
+                  id="name"
+                  value={user.name}
+                  onChange={handleChange}
+                />
+              </div>
 
               {/* EMAIL */}
               <div className="flex justify-center items-center gap-6 mb-4">
@@ -86,7 +82,7 @@ const Staff_Login = () => {
                   placeholder="Your Email"
                   name="email"
                   id="email"
-                  value={staff.email}
+                  value={user.email}
                   onChange={handleChange}
                 />
               </div>
@@ -102,7 +98,7 @@ const Staff_Login = () => {
                   placeholder="Your Password"
                   name="password"
                   id="password"
-                  value={staff.password}
+                  value={user.password}
                   onChange={handleChange}
                 />
               </div>
@@ -116,13 +112,13 @@ const Staff_Login = () => {
                 <p className="text-red-500 font-bold">{error}</p>
               </div>
 
-              {/* SIGN IN BUTTON */}
+              {/* SIGN UP BUTTON */}
               <div className="pt-2 w-full">
                 <button
                   type="submit"
                   className="bg-gray-700 w-full text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500"
                 >
-                  Sign in
+                  Sign up
                 </button>
               </div>
 
@@ -133,13 +129,14 @@ const Staff_Login = () => {
                 <hr />
               </div>
 
-              {/* SIGN UP BUTTON */}
+              {/* SIGN IN BUTTON */}
               <div className="flex justify-between items-center">
-                <div>Don't have any account? </div>
+                <div>Already have an account? </div>
+                {/* GO BACK BUTTN */}
                 <div className="mt-2">
-                  <Link to={"/register-staff"}>
+                  <Link to={"/login-staff"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
-                      Sign up
+                      Sign in
                     </button>
                   </Link>
                 </div>
@@ -153,4 +150,4 @@ const Staff_Login = () => {
   );
 };
 
-export default Staff_Login;
+export default User_Register;
