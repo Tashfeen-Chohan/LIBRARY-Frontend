@@ -27,9 +27,9 @@ const User_Register = () => {
     const {name, email, password} = user;
     if (name && email && password){
       try {
-        await axios.post("http://localhost:3000/api/userRegister", user)
+        await axios.post("http://localhost:3000/api/userRegister", user, {withCredentials: true})
         setUser({})
-        navigate("/login")
+        navigate("/")
       } catch (error) {
         setError(error.response.data.message)
       }
