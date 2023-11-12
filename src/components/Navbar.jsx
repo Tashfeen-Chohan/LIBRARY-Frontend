@@ -4,34 +4,16 @@ import Logo from "../assets/logo.png"
 import User from '../assets/user.png'
 import { Link, useNavigate } from "react-router-dom";
 import { BookContext } from "../contexts/BookContext";
-import Cookies from "js-cookie";
-import axios from "axios";
+import { useCookies } from "react-cookie";
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const navigate = useNavigate()
-  const {isLoggedIn, setIsLoggedIn} = useContext(BookContext)
-
-  // axios.defaults.withCredentials = true
-  // async function logout(){
-  //   // setToken(Cookies.remove("token"))
-
-  //   try {
-  //     const res = await axios.post("http://localhost:3000/logout")
-  //     setRole(null)
-  //     navigate("/login-staff")
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  //   // Cookies.remove("token")
-  //   // setToken(null)
-    
-  // }
+  const [cookies, removeCookie] = useCookies([])
 
   function logout(){
-    Cookies.remove("token", {path: "/"})
-    setIsLoggedIn(false)
+    removeCookie("token")
+    navigate("user-login")
   }
 
  
