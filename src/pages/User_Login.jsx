@@ -74,6 +74,7 @@ const User_Login = () => {
                   id="email"
                   value={user.email}
                   onChange={handleChange}
+                  autoFocus={true}
                 />
               </div>
 

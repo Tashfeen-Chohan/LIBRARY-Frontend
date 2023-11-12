@@ -29,7 +29,7 @@ export const BookContextProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [nextPage, setNextPage] = useState()
   const [prevPage, setPrevPage] = useState()
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [role, setRole] = useState(null)
 
   // function isAuthenticated(){

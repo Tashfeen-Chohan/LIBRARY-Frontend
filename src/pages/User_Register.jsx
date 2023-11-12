@@ -29,7 +29,7 @@ const User_Register = () => {
       try {
         await axios.post("http://localhost:3000/api/userRegister", user, {withCredentials: true})
         setUser({})
-        navigate("/")
+        navigate("/user-login")
       } catch (error) {
         setError(error.response.data.message)
       }
