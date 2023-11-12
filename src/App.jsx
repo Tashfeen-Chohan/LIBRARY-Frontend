@@ -15,13 +15,12 @@ import Cookies from "js-cookie";
 
 const App = () => {
 
-  const {isLoggedIn, role} = useContext(BookContext)
+  const {isLoggedIn} = useContext(BookContext)
 
-  
   return (
     <>
         <BrowserRouter>
-          <Navbar/>
+          {isLoggedIn && <Navbar/>}
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/create" element={<Create />} />

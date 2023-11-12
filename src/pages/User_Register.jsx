@@ -134,7 +134,7 @@ const User_Register = () => {
                 <div>Already have an account? </div>
                 {/* GO BACK BUTTN */}
                 <div className="mt-2">
-                  <Link to={"/login-staff"}>
+                  <Link to={"/user-login"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
                       Sign in
                     </button>

@@ -13,7 +13,7 @@ const User_Login = () => {
     password: "",
   });
   const [error, setError] = useState();
-  const {setRole} = useContext(BookContext)
+  const {setRole, setIsLoggedIn} = useContext(BookContext)
   const navigate = useNavigate()
 
   function handleChange(e) {
@@ -31,25 +31,8 @@ const User_Login = () => {
       try {
         await axios.post("http://localhost:3000/api/userLogin", user, {withCredentials: true})
         setUser({})
+        setIsLoggedIn(true)
         navigate("/")
-
-        // if (res.data.role === "librarian"){
-        //   setUser({})
-        //   // setToken(Cookies.get("token"))
-        //   setRole(res.data.role)
-        //   navigate("/dashboard-librarian")
-        // } else if (res.data.role === "admin"){
-        //   setUser({})
-        //   // setToken(Cookies.get("token"))
-        //   setRole(res.data.role)
-        //   navigate("/dashboard-admin")
-        // }
-        // else {
-        //   setUser({})
-        //   // setToken(Cookies.get("token"))
-        //   setRole(res.data.role)
-        //   navigate("/")
-        // }
       } catch (error) {
         setError(error.response.data.message)
         console.log(error)
@@ -140,7 +123,7 @@ const User_Login = () => {
               <div className="flex justify-between items-center">
                 <div>Don't have any account? </div>
                 <div className="mt-2">
-                  <Link to={"/register-user"}>
+                  <Link to={"/user-register"}>
                     <button className="bg-gray-700 text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
                       Sign up
                     </button>

@@ -29,17 +29,17 @@ export const BookContextProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [nextPage, setNextPage] = useState()
   const [prevPage, setPrevPage] = useState()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [role, setRole] = useState(null)
 
-  function isAuthenticated(){
-    const token = Cookies.get("token")
-    return !!token;
-  }
+  // function isAuthenticated(){
+  //   const token = Cookies.get("token")
+  //   return !!token;
+  // }
 
-  useEffect(() => {
-    setIsLoggedIn(isAuthenticated())
-  }, [isLoggedIn])
+  // useEffect(() => {
+  //   setIsLoggedIn(isAuthenticated())
+  // }, [isLoggedIn])
 
 
   // FETCHING BOOKS FROM DATABASE WITH PAGINATION

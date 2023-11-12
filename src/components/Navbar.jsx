@@ -10,9 +10,11 @@ export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const navigate = useNavigate()
   const [cookies, removeCookie] = useCookies([])
+  const {setIsLoggedIn} = useContext(BookContext)
 
   function logout(){
     removeCookie("token")
+    setIsLoggedIn(false)
     navigate("user-login")
   }
 
