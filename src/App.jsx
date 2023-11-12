@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./pages/Home";
@@ -11,9 +11,16 @@ import Staff_Login from "./pages/Staff_Login";
 import Navbar from "./components/Navbar";
 import Librarian_Dashboard from "./pages/Librarian_Dashboard"
 import Admin_Dashboard from "./pages/Admin_Dashboard"
+import Cookies from "js-cookie";
 
 const App = () => {
-  const {role, token } = useContext(BookContext)
+
+  const {token, setToken, role} = useContext(BookContext)
+
+  useEffect(() => {
+    setToken(Cookies.get("token"))
+  }, [token])
+
   return (
     <>
         <BrowserRouter>
@@ -25,7 +32,7 @@ const App = () => {
             <Route path="/register-staff" element={<Staff_Register/>}/>
             <Route path="/login-staff" element={<Staff_Login/>}/>
             <Route path="/dashboard-librarian" element={role ? <Librarian_Dashboard/> : <Staff_Login/>}/>
-            <Route path="/dashboard-admin" element={role ? <Admin_Dashboard/> : <Staff_Login/>}/>
+            <Route path="/dashboard-admin" element={<Admin_Dashboard/>}/>
             <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>

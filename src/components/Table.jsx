@@ -12,7 +12,8 @@ const Table = () => {
     setSortBy,
     bookData,
     totalBooks,
-    fetchBooks
+    fetchBooks,
+    role
   } = useContext(BookContext);
 
   // FUNCTION TO DELETE BOOK
@@ -32,11 +33,11 @@ const Table = () => {
         <div className="bg-slate-700  text-white inline-block px-2 py-1 rounded shadow-md">
           Total Books: {totalBooks}
         </div>
-        <Link to={"/create"}>
-          <button className=" bg-blue-500 shadow-md text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
-            Add Book
-          </button>
-        </Link>
+          {role === 'admin' && <button className=" bg-blue-500 shadow-md text-white py-1 px-3 rounded hover:bg-black transition-colors duration-500">
+            <Link to={"/create"}>
+                Add Book
+            </Link>
+          </button>}
       </div>
 
       {/* BOOK HEADING */}
@@ -124,9 +125,9 @@ const Table = () => {
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
               Price
             </th>
-            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
+            {role === "admin" && <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
               Actions
-            </th>
+            </th>}
           </tr>
         </thead>
         <tbody className="block md:table-row-group">
@@ -177,7 +178,7 @@ const Table = () => {
                 </span>
                 {val.price}
               </td>
-              <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+              {role === "admin" && <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                 <span className="inline-block w-1/3 md:hidden font-bold">
                   Actions
                 </span>
@@ -192,7 +193,7 @@ const Table = () => {
                 >
                   Delete
                 </button>
-              </td>
+              </td>}
             </tr>
           ))}
         </tbody>

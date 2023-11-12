@@ -5,6 +5,7 @@ import {BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
+import Cookies from "js-cookie";
 
 const Staff_Login = () => {
   const [staff, setStaff] = useState({
@@ -32,18 +33,18 @@ const Staff_Login = () => {
         const res = await axios.post("http://localhost:3000/api/staffAuth", staff)
         if (res.data.role === "librarian"){
           setStaff({})
-          setToken(res.data.token)
+          // setToken(Cookies.get("token"))
           setRole(res.data.role)
           navigate("/dashboard-librarian")
         } else if (res.data.role === "admin"){
           setStaff({})
-          setToken(res.data.token)
+          // setToken(Cookies.get("token"))
           setRole(res.data.role)
           navigate("/dashboard-admin")
         }
         else {
           setStaff({})
-          setToken(res.data.token)
+          // setToken(Cookies.get("token"))
           setRole(res.data.role)
           navigate("/")
         }
