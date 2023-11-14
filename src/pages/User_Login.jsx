@@ -5,7 +5,6 @@ import {BsFillKeyFill} from 'react-icons/bs'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BookContext } from "../contexts/BookContext";
-import Cookies from "js-cookie";
 
 const User_Login = () => {
   const [user, setUser] = useState({
@@ -29,7 +28,7 @@ const User_Login = () => {
     const {email, password} = user;
     if (email && password){
       try {
-        await axios.post("http://localhost:3000/api/userLogin", user, {withCredentials: true})
+        const res = await axios.post("http://localhost:3000/api/userLogin", user, {withCredentials: true})
         setUser({})
         setIsLoggedIn(true)
         navigate("/")

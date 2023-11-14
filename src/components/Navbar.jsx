@@ -15,7 +15,9 @@ export default function Navbar() {
   function logout(){
     removeCookie("token")
     setIsLoggedIn(false)
-    navigate("user-login")
+    navigate("/user-login")
+    window.history.replaceState({}, document.title, "/user-login");
+    window.location.reload()
   }
 
  
